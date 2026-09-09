@@ -41,21 +41,6 @@
     var email = document.getElementById('email').value.trim();
     var pass = document.getElementById('pass').value;
 
-    // 0) Bu projede GERÇEKTE hangi Firestore veritabanları var, listele
-    log('0) Projedeki veritabanları listeleniyor...');
-    try {
-      var listRes = await fetch('https://firestore.googleapis.com/v1/projects/' + PROJECT_ID + '/databases');
-      var listData = await listRes.json();
-      if (listRes.ok) {
-        log('✅ Veritabanı listesi alındı:', 'ok');
-        log(JSON.stringify(listData, null, 2));
-      } else {
-        log('❌ Veritabanı listesi alınamadı: ' + JSON.stringify(listData), 'err');
-      }
-    } catch (e) {
-      log('❌ Liste isteği ağ hatası: ' + e.message, 'err');
-    }
-
     // 1) REST ile giriş yap (Identity Toolkit REST API)
     log('1) Giriş isteği gönderiliyor (REST)...');
     var idToken, localId;
@@ -89,7 +74,7 @@
     try {
       var t2 = performance.now();
       var docUrl = 'https://firestore.googleapis.com/v1/projects/' + PROJECT_ID +
-                   '/databases/(default)/documents/userdata/' + localId;
+                   '/databases/default/documents/userdata/' + localId;
       var docRes = await fetch(docUrl, {
         headers: { 'Authorization': 'Bearer ' + idToken }
       });
